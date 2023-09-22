@@ -1,26 +1,37 @@
+// Questo componente rappresenta la pagina degli ultimi rilasci dei libri.
+// Utilizza Redux per gestire lo stato dei libri e delle azioni.
+
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setBooks, selectBooks } from "../Reduce/reduce"; // Importa le azioni e il selettore
-import SingleBook from "../SingleBook/SingleBook"; // Importa il componente SingleBook
-import CommentArea from "../CommentArea/CommentArea";
+import { setBooks, selectBooks } from "../Reduce/reduce";
+import BookPage from "../Bookpage/Bookpage";
+
+// Importa i file JSON dei vari generi di libri
+import fantasyBooks from "../Data/fantasy.json";
+import historyBooks from "../Data/history.json";
+import horrorBooks from "../Data/horror.json";
+import romanceBooks from "../Data/romance.json";
+import scifiBooks from "../Data/scifi.json";
 
 const LatestRelease = () => {
-	const dispatch = useDispatch();
-	const books = useSelector(selectBooks);
+	const dispatch = useDispatch(); // Inizializza la funzione di dispatch di Redux
+	const books = useSelector(selectBooks); // Ottieni lo stato dei libri utilizzando il selettore di Redux
 
 	useEffect(() => {
-		// Esegui la richiesta API quando il componente si monta
-		fetch("https://epibooks.onrender.com")
-			.then((response) => response.json())
-			.then((data) => {
-				// Invia l'azione per impostare i dati dei libri nel tuo store Redux
-				dispatch(setBooks(data));
-				console.log(data);
-			})
-			.catch((error) => {
-				console.error("Errore nella richiesta API:", error);
-			});
-	}, [dispatch]); // Assicurati di includere dispatch nell'array delle dipendenze
+		// In questa fase, puoi inviare i dati dai file JSON al tuo store Redux utilizzando l'azione 'setBooks'.
+
+		// Ad esempio, per i libri di genere fantasy:
+		dispatch(setBooks(fantasyBooks));
+
+		// Puoi fare lo stesso per gli altri generi di libri.
+		dispatch(setBooks(historyBooks));
+		dispatch(setBooks(horrorBooks));
+		dispatch(setBooks(romanceBooks));
+		dispatch(setBooks(scifiBooks));
+
+		// Nota che stai inviando i dati dei libri al tuo store Redux, quindi ora dovresti avere accesso a questi dati
+		// utilizzando il selettore `selectBooks` in altri componenti.
+	}, [dispatch]);
 
 	return (
 		<div>
@@ -28,7 +39,7 @@ const LatestRelease = () => {
 			<div>
 				{books.map((book, index) => (
 					<div key={`${book.asin}-${index}`}>
-						<SingleBook book={book} />
+						<BookPage book={book} />
 					</div>
 				))}
 			</div>
@@ -36,4 +47,11 @@ const LatestRelease = () => {
 	);
 };
 
-export default LatestRelease;
+export default LatestRelease; // Esporta il componente LatestRelease
+
+//Il componente LatestRelease è una funzione React che rappresenta la pagina degli ultimi rilasci dei libri,
+// Utilizza hook di Redux come useDispatch e useSelector per accedere allo stato Redux e alle azioni.
+//Nell'effetto useEffect, quando il componente si monta, viene eseguita una richiesta API a "https://epibooks.onrender.com" per ottenere dati sui libri più recenti.
+//I dati ottenuti dalla richiesta API vengono convertiti in formato JSON e memorizzati nello stato Redux utilizzando l'azione setBooks e la funzione di dispatch dispatch.
+//I dati ottenuti vengono anche stampati nella console per scopi di debug.
+//Nella parte di rendering, viene visualizzata una lista di libri mappando l'array books e creando un componente BookPage per ciascun libro.

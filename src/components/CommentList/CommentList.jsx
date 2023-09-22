@@ -11,7 +11,7 @@ const CommentList = ({ reviews }) => {
 			<ul>
 				{reviewsArray.map((review) => (
 					<li key={review._id}>
-						<SingleComment review={review} />{" "}
+						<SingleComment review={review} />
 						{/* Utilizza SingleComment per renderizzare ciascuna recensione */}
 					</li>
 				))}

@@ -11,10 +11,7 @@ const App = () => {
 			<Welcome />
 			<div className="container">
 				<div className="row">
-					<div className="col-6"></div>
-					<div className="col-6">
-						<LatestRelease />
-					</div>
+					<LatestRelease />
 				</div>
 			</div>
 			<Footer />

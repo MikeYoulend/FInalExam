@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
 	toggleShowComments,
@@ -13,12 +13,14 @@ const SingleBook = ({ book }) => {
 	const dispatch = useDispatch();
 	const showComments = useSelector(selectShowComments);
 
+	const [commentsVisible, setCommentsVisible] = useState(false);
+
 	const toggleComments = () => {
+		setCommentsVisible(!commentsVisible);
 		dispatch(
 			toggleShowComments({ asin: book.asin, show: !showComments[book.asin] })
 		);
 	};
-
 	const handleBookClick = () => {
 		dispatch(setSelectedBookAsin(book.asin));
 	};
@@ -36,7 +38,6 @@ const SingleBook = ({ book }) => {
 						? "Hide Comments"
 						: "Show Comments"}
 				</button>
-				{showComments[book.asin] && <CommentArea book={book} />}
 			</Card.Body>
 			<div onClick={handleBookClick} className="overlay"></div>
 		</Card>

@@ -1,0 +1,13 @@
+.book-page {
+	display: flex;
+}
+
+.book-column {
+	flex: 1;
+	padding: 16px;
+}
+
+.comment-column {
+	flex: 1;
+	padding: 16px;
+}
