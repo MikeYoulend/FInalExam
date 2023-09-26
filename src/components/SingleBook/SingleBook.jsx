@@ -6,7 +6,7 @@ import {
 	selectShowComments,
 } from "../Reduce/reduce";
 import Card from "react-bootstrap/Card";
-import CommentArea from "../CommentArea/CommentArea";
+import { Link } from "react-router-dom"; // Importa il componente Link
 import "./singleBook.css"; // Importa il file CSS
 
 const SingleBook = ({ book }) => {
@@ -29,7 +29,9 @@ const SingleBook = ({ book }) => {
 		<Card style={{ width: "18rem" }}>
 			<Card.Img variant="top" src={book.img} alt={book.title} />
 			<Card.Body>
-				<Card.Title>{book.title}</Card.Title>
+				<Link to={`/book-details/${book.asin}`}>
+					<Card.Title>{book.title}</Card.Title>
+				</Link>
 				<Card.Text>Category: {book.category}</Card.Text>
 				<Card.Text>ASIN: {book.asin}</Card.Text>
 				<Card.Text>Price: ${book.price}</Card.Text>

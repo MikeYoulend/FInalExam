@@ -6,31 +6,29 @@ import { useDispatch, useSelector } from "react-redux";
 import { setBooks, selectBooks } from "../Reduce/reduce";
 import BookPage from "../Bookpage/Bookpage";
 
-// Importa i file JSON dei vari generi di libri
-import fantasyBooks from "../Data/fantasy.json";
-import historyBooks from "../Data/history.json";
-import horrorBooks from "../Data/horror.json";
-import romanceBooks from "../Data/romance.json";
-import scifiBooks from "../Data/scifi.json";
-
 const LatestRelease = () => {
 	const dispatch = useDispatch(); // Inizializza la funzione di dispatch di Redux
 	const books = useSelector(selectBooks); // Ottieni lo stato dei libri utilizzando il selettore di Redux
 
 	useEffect(() => {
-		// In questa fase, puoi inviare i dati dai file JSON al tuo store Redux utilizzando l'azione 'setBooks'.
+		const fetchData = async () => {
+			try {
+				const response = await fetch("https://epibooks.onrender.com/"); // Effettua la richiesta GET al server
+				if (!response.ok) {
+					throw new Error("Errore nella richiesta al server");
+				}
+				const data = await response.json(); // Estrai i dati JSON dalla risposta
 
-		// Ad esempio, per i libri di genere fantasy:
-		dispatch(setBooks(fantasyBooks));
+				// Adesso puoi inviare i dati al tuo store Redux utilizzando l'azione 'setBooks'
+				dispatch(setBooks(data));
 
-		// Puoi fare lo stesso per gli altri generi di libri.
-		dispatch(setBooks(historyBooks));
-		dispatch(setBooks(horrorBooks));
-		dispatch(setBooks(romanceBooks));
-		dispatch(setBooks(scifiBooks));
+				// Questo aggiornerà lo stato dei libri nel tuo store Redux con i dati ottenuti dal server.
+			} catch (error) {
+				console.error("Errore durante il recupero dei dati:", error);
+			}
+		};
 
-		// Nota che stai inviando i dati dei libri al tuo store Redux, quindi ora dovresti avere accesso a questi dati
-		// utilizzando il selettore `selectBooks` in altri componenti.
+		fetchData(); // Chiama la funzione fetchData per ottenere i dati dal server quando il componente si monta
 	}, [dispatch]);
 
 	return (

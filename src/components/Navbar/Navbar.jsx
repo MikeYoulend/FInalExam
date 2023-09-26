@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setBooks } from "../Reduce/reduce"; // Importa l'azione per impostare i libri
 import { selectBooks } from "../Reduce/reduce"; // Importa il selettore per ottenere i libri
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
 	const dispatch = useDispatch();
@@ -38,9 +39,9 @@ const Navbar = () => {
 				<div className="collapse navbar-collapse" id="navbarNav">
 					<ul className="navbar-nav ml-auto">
 						<li className="nav-item active">
-							<a className="nav-link" href="#">
+							<Link to="/" className="nav-link">
 								Home <span className="sr-only">(current)</span>
-							</a>
+							</Link>
 						</li>
 						<li className="nav-item">
 							<a className="nav-link" href="#">

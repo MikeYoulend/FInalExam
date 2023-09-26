@@ -10,6 +10,7 @@ const BookPage = ({ book }) => {
 				<SingleBook book={book} />
 			</div>
 			<div className="comment-column">
+				<h3>Comments</h3>
 				<CommentArea book={book} />
 			</div>
 		</div>
