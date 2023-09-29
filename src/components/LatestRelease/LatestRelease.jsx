@@ -33,7 +33,6 @@ const LatestRelease = () => {
 
 	return (
 		<div>
-			<h2>Ultimo Rilascio</h2>
 			<div>
 				{books.map((book, index) => (
 					<div key={`${book.asin}-${index}`}>
