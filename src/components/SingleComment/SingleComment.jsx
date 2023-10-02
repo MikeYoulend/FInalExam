@@ -1,6 +1,9 @@
+import React from "react";
+import "./singleComment.css"; // Importa il file CSS
+
 const SingleComment = ({ review }) => {
 	return (
-		<div>
+		<div className="single-comment-container">
 			<p>Autore: {review.author}</p>
 			<p>Commento: {review.comment}</p>
 			<p>Rate: {review.rate}</p>

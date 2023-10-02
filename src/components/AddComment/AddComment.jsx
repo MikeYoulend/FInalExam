@@ -1,44 +1,60 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setReviews } from "../Reduce/reduce"; // Assicurati di utilizzare il percorso corretto per l'import
+import { setReviews } from "../Reduce/reduce";
 import Modal from "react-modal";
+import "./addComment.css";
 
 const AddComment = ({ bookAsin }) => {
 	const dispatch = useDispatch();
 	const [comment, setComment] = useState("");
 	const [rate, setRate] = useState(1);
-	const [isModalOpen, setIsModalOpen] = useState(false); // Stato per gestire l'apertura/chiusura del modale
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [error, setError] = useState(null); // Stato per gestire l'errore
 
 	const handleAddComment = () => {
-		// Crea un nuovo oggetto recensione con i dati del commento
 		const newReview = {
 			comment: comment,
 			rate: rate,
 			elementId: bookAsin,
 		};
 
-		// Esegui una richiesta POST per inviare la nuova recensione all'API
 		fetch("https://striveschool-api.herokuapp.com/api/comments/", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 				Authorization:
-					"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU0ZWU0MGRmZmI4YjAwMTQ0MTNjZmQiLCJpYXQiOjE2OTUxMzE2NjMsImV4cCI6MTY5NjM0MTI2M30.tw2a1itvxaGRzv9bBHf9tmOCYDTBVD4sUyBLeh4MCNI", // Sostituisci con il tuo token reale
+					"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGU0ZWU0MGRmZmI4YjAwMTQ0MTNjZmQiLCJpYXQiOjE2OTUxMzE2NjMsImV4cCI6MTY5NjM0MTI2M30.tw2a1itvxaGRzv9bBHf9tmOCYDTBVD4sUyBLeh4MCNI",
 			},
 			body: JSON.stringify(newReview),
 		})
-			.then((response) => response.json())
+			.then((response) => {
+				if (response.ok) {
+					return response.json();
+				} else {
+					throw new Error("Errore nell'invio della recensione");
+				}
+			})
 			.then((data) => {
-				// Aggiorna lo stato delle recensioni nel Redux con i dati dell'API
 				dispatch(setReviews(data));
+				setIsModalOpen(false);
+				setError(null);
 			})
 			.catch((error) => {
 				console.error("Errore nell'invio della recensione:", error);
+				setError("Errore nell'invio della recensione. Riprova più tardi.");
+			})
+			.finally(() => {
+				// Pulisci il modulo dopo l'invio o in caso di errore
+				setComment("");
+				setRate(1);
 			});
-		setIsModalOpen(true);
-		// Pulisci il modulo dopo l'invio
-		setComment("");
-		setRate(1);
+	};
+
+	const handleCloseModal = () => {
+		if (error) {
+			// Ricarica la pagina se c'è un errore e l'utente clicca su "Chiudi"
+			window.location.reload();
+		}
 	};
 
 	return (
@@ -60,14 +76,19 @@ const AddComment = ({ bookAsin }) => {
 				</select>
 			</label>
 			<button onClick={handleAddComment}>Invia</button>
-			{/* Modale per mostrare il messaggio di successo */}
+			{/* Modale per mostrare il messaggio di successo o errore */}
 			<Modal
-				isOpen={isModalOpen}
-				onRequestClose={() => setIsModalOpen(false)}
-				contentLabel="Recensione inviata con successo"
+				isOpen={isModalOpen || error}
+				onRequestClose={handleCloseModal}
+				contentLabel="Messaggio"
+				className="react-modal"
+				overlayClassName="react-modal-overlay"
 			>
-				<h2>Recensione inviata con successo!</h2>
-				<button onClick={() => setIsModalOpen(false)}>Chiudi</button>
+				<div className="react-modal-content">
+					<h2>{error ? "Errore" : "Recensione inviata con successo!"}</h2>
+					{error && <p>{error}</p>}
+					<button onClick={handleCloseModal}>Chiudi</button>
+				</div>
 			</Modal>
 		</div>
 	);
