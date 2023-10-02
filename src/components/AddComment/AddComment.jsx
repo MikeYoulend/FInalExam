@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setReviews } from "../Reduce/reduce"; // Assicurati di utilizzare il percorso corretto per l'import
+import Modal from "react-modal";
 
 const AddComment = ({ bookAsin }) => {
 	const dispatch = useDispatch();
 	const [comment, setComment] = useState("");
 	const [rate, setRate] = useState(1);
+	const [isModalOpen, setIsModalOpen] = useState(false); // Stato per gestire l'apertura/chiusura del modale
 
 	const handleAddComment = () => {
 		// Crea un nuovo oggetto recensione con i dati del commento
@@ -33,7 +35,7 @@ const AddComment = ({ bookAsin }) => {
 			.catch((error) => {
 				console.error("Errore nell'invio della recensione:", error);
 			});
-
+		setIsModalOpen(true);
 		// Pulisci il modulo dopo l'invio
 		setComment("");
 		setRate(1);
@@ -58,6 +60,15 @@ const AddComment = ({ bookAsin }) => {
 				</select>
 			</label>
 			<button onClick={handleAddComment}>Invia</button>
+			{/* Modale per mostrare il messaggio di successo */}
+			<Modal
+				isOpen={isModalOpen}
+				onRequestClose={() => setIsModalOpen(false)}
+				contentLabel="Recensione inviata con successo"
+			>
+				<h2>Recensione inviata con successo!</h2>
+				<button onClick={() => setIsModalOpen(false)}>Chiudi</button>
+			</Modal>
 		</div>
 	);
 };

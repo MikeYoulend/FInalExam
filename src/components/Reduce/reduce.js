@@ -7,7 +7,6 @@ const booksSlice = createSlice({
 		books: [], // Array contenente i dati dei libri
 		showComments: {}, // Oggetto per tracciare lo stato dei commenti visualizzati
 		reviews: [], // Array contenente le recensioni
-		selectedBookId: null, // ID del libro selezionato
 		selectedBookAsin: null, // ASIN del libro selezionato
 	},
 	reducers: {
@@ -24,10 +23,6 @@ const booksSlice = createSlice({
 		setReviews: (state, action) => {
 			state.reviews = action.payload;
 		},
-		// Azione per impostare l'ID del libro selezionato
-		setSelectedBookId: (state, action) => {
-			state.selectedBookId = action.payload;
-		},
 		// Azione per impostare l'ASIN del libro selezionato
 		setSelectedBookAsin: (state, action) => {
 			state.selectedBookAsin = action.payload;
@@ -36,19 +31,13 @@ const booksSlice = createSlice({
 });
 
 // Export delle azioni e dei selettori
-export const {
-	setBooks,
-	toggleShowComments,
-	setReviews,
-	setSelectedBookId,
-	setSelectedBookAsin,
-} = booksSlice.actions;
+export const { setBooks, toggleShowComments, setReviews, setSelectedBookAsin } =
+	booksSlice.actions;
 
 // Selettori per ottenere i dati dallo stato
 export const selectBooks = (state) => state.books.books;
 export const selectShowComments = (state) => state.books.showComments;
 export const selectReviews = (state) => state.books.reviews;
-export const selectSelectedBookId = (state) => state.books.selectedBookId;
 export const selectSelectedBookAsin = (state) => state.books.selectedBookAsin;
 
 // Configurazione del negozio Redux
