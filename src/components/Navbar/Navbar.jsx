@@ -11,17 +11,11 @@ const Navbar = () => {
 	const [filteredBooks, setFilteredBooks] = useState(originalBooks);
 
 	const handleSearch = (value) => {
-		// Se la barra di ricerca è vuota, reimposta i libri con quelli originali dallo stato di Redux
-		if (value.trim() === "") {
-			setFilteredBooks(originalBooks);
-		} else {
-			// Altrimenti, filtra i libri in base al termine di ricerca
-			const filtered = originalBooks.filter((book) =>
-				book.title.toLowerCase().includes(value.toLowerCase())
-			);
-			// Aggiorna lo stato dei libri filtrati
-			setFilteredBooks(filtered);
-		}
+		const filtered = originalBooks.filter((book) =>
+			book.title.toLowerCase().includes(value.toLowerCase())
+		);
+		// Aggiorna lo stato dei libri filtrati
+		setFilteredBooks(filtered);
 	};
 
 	// Gestisci la modifica del campo di ricerca
@@ -37,8 +31,10 @@ const Navbar = () => {
 
 	// Effettua una nuova richiesta al server quando la barra di ricerca è vuota
 	useEffect(() => {
+		const shouldFetchData =
+			searchTerm.trim() === "" && originalBooks.length <= 100;
 		dispatch(setBooks(filteredBooks));
-		if (searchTerm.trim() === "") {
+		if (shouldFetchData) {
 			// Esegui una nuova richiesta al server per ottenere tutti i libri
 			const fetchData = async () => {
 				try {
