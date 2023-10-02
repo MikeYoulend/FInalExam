@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setBooks } from "../Reduce/reduce";
 import { selectBooks } from "../Reduce/reduce";
 import { Link } from "react-router-dom";
+import "./navbar.css";
 
 const Navbar = () => {
 	const dispatch = useDispatch();
@@ -57,36 +58,22 @@ const Navbar = () => {
 	return (
 		<nav className="navbar navbar-expand-lg navbar-light bg-light">
 			<div className="container">
-				<a className="navbar-brand" href="#">
-					Il Tuo Logo
-				</a>
-				<button
-					className="navbar-toggler"
-					type="button"
-					data-toggle="collapse"
-					data-target="#navbarNav"
-					aria-controls="navbarNav"
-					aria-expanded="false"
-					aria-label="Toggle navigation"
-				>
-					<span className="navbar-toggler-icon"></span>
-				</button>
-				<div className="collapse navbar-collapse" id="navbarNav">
-					<ul className="navbar-nav ml-auto">
-						<li className="nav-item active">
+				<div className="navbar-nav">
+					<ul className="navbar-nav mr-auto">
+						<li className="nav-item active ml-0">
 							<Link to="/" className="nav-link">
 								Home <span className="sr-only">(current)</span>
 							</Link>
 						</li>
 					</ul>
-				</div>
-				<div className="ml-auto">
-					<input
-						type="text"
-						placeholder="Cerca libri..."
-						value={searchTerm}
-						onChange={handleChange}
-					/>
+					<div className="ml-auto">
+						<input
+							type="text"
+							placeholder="Cerca libri..."
+							value={searchTerm}
+							onChange={handleChange}
+						/>
+					</div>
 				</div>
 			</div>
 		</nav>

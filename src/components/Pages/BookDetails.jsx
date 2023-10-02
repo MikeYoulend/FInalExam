@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import "./bookDetails.css";
 
 const BookDetails = () => {
 	const [bookDetails, setBookDetails] = useState(null);
@@ -31,12 +32,25 @@ const BookDetails = () => {
 
 	return (
 		<div>
-			<h2>Dettagli del Libro</h2>
-			<img src={bookDetails[0].img} width={300} />
-			<p>Titolo: {bookDetails[0].title}</p>
-			<p>ASIN: {bookDetails[0].asin}</p>
-			<p>Categoria: {bookDetails[0].category}</p>
-			<p>Prezzo: ${bookDetails[0].price}</p>
+			<nav className="navbar navbar-expand-lg navbar-light bg-light">
+				<div className="container">
+					<div className="navbar-nav">
+						<li className="nav-item active ml-0">
+							<Link to="/" className="nav-link fs-2">
+								Home
+							</Link>
+						</li>
+					</div>
+				</div>
+			</nav>
+			<div className="card-container">
+				<h2>Dettagli del Libro</h2>
+				<img src={bookDetails[0].img} width={300} alt={bookDetails[0].title} />
+				<p>Titolo: {bookDetails[0].title}</p>
+				<p>ASIN: {bookDetails[0].asin}</p>
+				<p>Categoria: {bookDetails[0].category}</p>
+				<p>Prezzo: ${bookDetails[0].price}</p>
+			</div>
 		</div>
 	);
 };
