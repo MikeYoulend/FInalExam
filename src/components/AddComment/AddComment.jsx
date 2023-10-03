@@ -9,7 +9,7 @@ const AddComment = ({ bookAsin }) => {
 	const [comment, setComment] = useState("");
 	const [rate, setRate] = useState(1);
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [error, setError] = useState(null); // Stato per gestire l'errore
+	const [modalMessage, setModalMessage] = useState(""); // Messaggio da mostrare nel modale
 
 	const handleAddComment = () => {
 		const newReview = {
@@ -36,14 +36,16 @@ const AddComment = ({ bookAsin }) => {
 			})
 			.then((data) => {
 				dispatch(setReviews(data));
-				setIsModalOpen(false);
-				setError(null);
+				setModalMessage("Recensione inviata con successo!");
 			})
 			.catch((error) => {
 				console.error("Errore nell'invio della recensione:", error);
-				setError("Errore nell'invio della recensione. Riprova più tardi.");
+				setModalMessage(
+					"Errore nell'invio della recensione. Riprova più tardi."
+				);
 			})
 			.finally(() => {
+				setIsModalOpen(true);
 				// Pulisci il modulo dopo l'invio o in caso di errore
 				setComment("");
 				setRate(1);
@@ -51,10 +53,8 @@ const AddComment = ({ bookAsin }) => {
 	};
 
 	const handleCloseModal = () => {
-		if (error) {
-			// Ricarica la pagina se c'è un errore e l'utente clicca su "Chiudi"
-			window.location.reload();
-		}
+		// Chiudi il modale
+		setIsModalOpen(false);
 	};
 
 	return (
@@ -78,15 +78,14 @@ const AddComment = ({ bookAsin }) => {
 			<button onClick={handleAddComment}>Invia</button>
 			{/* Modale per mostrare il messaggio di successo o errore */}
 			<Modal
-				isOpen={isModalOpen || error}
+				isOpen={isModalOpen}
 				onRequestClose={handleCloseModal}
 				contentLabel="Messaggio"
 				className="react-modal"
 				overlayClassName="react-modal-overlay"
 			>
 				<div className="react-modal-content">
-					<h2>{error ? "Errore" : "Recensione inviata con successo!"}</h2>
-					{error && <p>{error}</p>}
+					<h2>{modalMessage}</h2>
 					<button onClick={handleCloseModal}>Chiudi</button>
 				</div>
 			</Modal>
